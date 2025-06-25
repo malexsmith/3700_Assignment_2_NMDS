@@ -19,8 +19,6 @@ getwd()
 # setwd("_____")
 setwd("C:\\Users\\malex\\Sync\\R")
 
-data2 <- read.csv(file = "3700 bigger test nmds community.csv",head=TRUE,row.names = 1, sep=",")
-metadata2 <- read.csv(file = "3700 bigger test nmds metadata.csv",head=TRUE,row.names = 1, sep=",")
 
 # This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them). If you have already installed them, you can skip to the library() commands below which will open the packages you need to complete this assignment. 
 
@@ -54,14 +52,11 @@ library(reshape2)
 
 # this next block of code will upload incidence matrices (presence, or 1's, and absence, or 0's) for the thermal vents were we have data.  In addition, the metadata files will add details about the sites (including their location, region, area, chemistry etc.)
 
-data <- read.csv(file = "3700 test nmds community.csv",head=TRUE,row.names = 1, sep=",")
-metadata <- read.csv(file = "3700 test nmds metadata.csv",head=TRUE,row.names = 1, sep=",")
-taxon <- read.csv(file = "3700 test nmds taxon metadata.csv",head=TRUE,row.names = 1, sep=",")
+data2 <- read.csv(file = "3700 bigger test nmds community.csv",head=TRUE,row.names = 1, sep=",")
 metadata2 <- read.csv(file = "3700 bigger test nmds metadata.csv",head=TRUE,row.names = 1, sep=",")
 
 ## First, lets make a map of the locations using the package mapview. 
 ## this map is dynamic and you can move around and plot against several background layers
-## https://map-rfun.library.duke.edu/01_georeference.html
 
 colors = viridis(7)
 
@@ -155,7 +150,6 @@ stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
                 method = "bray")
 stats
 ## so does the region affect the community of species living at these vents? 
-##https://uw.pressbooks.pub/appliedmultivariatestatistics/chapter/permanova/
 
 
 ## The next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them 
@@ -169,7 +163,8 @@ dev.off() # Close the file
 
 
 # So - hats off to you!! You've mapped the locations of many of the thermal-vents around the world and then used species incidence data from these sites to compare alpha- and beta-diversity. Now, print your pdf, examine the map, box-plot and NMDS, and prepare to speak for three minutes (!!without notes!!) about the conclusions you might make regarding the diversity, ecological similarity and vulnerability of these thermal-vents. 
-#  
+
+  
 # How species rich are these vents
 # Are the vent sites distinct? 
 # Which is the most diverse? 
