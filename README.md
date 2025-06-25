@@ -34,7 +34,7 @@ BiocManager::install("mapview");
 BiocManager::install("viridis");
 BiocManager::install("webshot");
 BiocManager::install("pagedown");
-BiocManager::install("reshape2");
+BiocManager::install("imager");
 
 
 # The next block are the library() commands which will 10 the packages you need to complete this assignment. 
@@ -48,7 +48,7 @@ library(mapview)
 library(viridis)
 library(webshot)
 library(pagedown)
-library(reshape2)
+library(imager)
 
 # this next block of code will upload incidence matrices (presence, or 1's, and absence, or 0's) for the thermal vents were we have data.  In addition, the metadata files will add details about the sites (including their location, region, area, chemistry etc.)
 
@@ -60,20 +60,17 @@ metadata2 <- read.csv(file = "3700 bigger test nmds metadata.csv",head=TRUE,row.
 
 colors = viridis(7)
 
-ThermalVents <- st_as_sf(metadata, coords = c("Long", "Lat"),  crs = 4326)
-mapview(ThermalVents, zcol = "Region")
-mapview(ThermalVents, zcol = "Region", map.types = "Esri.WorldImagery")
-m=mapview(ThermalVents, zcol = "Region", map.types = "Esri.WorldImagery")
-
 ## Your first map will be against a standard cartographic background of shorelines
 ThermalVents2 <- st_as_sf(metadata2, coords = c("Long", "Lat"),  crs = 4326)
+mapview(ThermalVents2, zcol = "Region")
 m=mapview(ThermalVents2, zcol = "Region", burst = TRUE, map.types = "CartoDB.Positron", col.regions = colors)
-m
+
 
 ## Your second map will be against a ESRI World Imagery background - which shows elevations and depths. 
 ## You should be able to zoom in and see your sites siting on large geological ridges. 
 
-mapview(ThermalVents2, zcol = "Region", burst = TRUE, col.regions = brewer.pal(7, "Paired"), map.types = "Esri.WorldImagery")
+mapview(ThermalVents2, zcol = "Region", map.types = "Esri.WorldImagery")
+
 
 ## Now, we're going to follow several steps to export this map to an image so that you can include it in your final pdf working document. 
 
@@ -121,7 +118,7 @@ ord2 <- metaMDS(data2)
 
 my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
 
-#  this extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
+#  this is your NMDS map, but the colours don't align with your earlier plots - so let's extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
 
 a.plot <- my.plot$plot
 a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS") +
@@ -132,7 +129,7 @@ beta=a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS plo
 beta
 ## Are the regions characterised by the same thermal-vent species? 
  
-## ONe way to determine how different they are is to use ANOSIM (Clarke 1993) or the PERMANOVA 
+## One way to determine how different they are is to use ANOSIM (Clarke 1993) or the PERMANOVA 
 
 # The ANalysis Of SIMilarity (ANOSIM) test has some similarity to an ANOVA-like hypothesis test, however, it is used to evaluate a dissimilarity matrix rather than raw data (Clarke, 1993). The PERmutational Multivariate ANalysis of VAriance (PERMANOVA) compares the variation between groups to the variation within groups
 
@@ -141,21 +138,21 @@ beta
 comm.bc.dist <- vegdist(data2, method = "bray") 
 attach(metadata2)
 
+# This next block will run the ANOSIM to compare the variation between groups to the variation within groups
 deep.sea.anosim <- anosim(comm.bc.dist , Region)
 summary(deep.sea.anosim)
-plot(deep.sea.anosim)
 
-## or using adonis2 from the vegan package 
+## This next block will run the PERMANOVA to compare the variation between groups to the variation within groups
 stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
                 method = "bray")
 stats
-## so does the region affect the community of species living at these vents? 
+## so does the region affect the community of species living at these vents? Compare the variation between groups to the variation within groups.
 
 
-## The next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them 
+## Finally - the next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them 
 
 
-pdf("3700_NMDS_deep_sea_thermal_vents_250625.pdf", width = 12, height = 8) # Open a new pdf file
+pdf("3700_Assignment_2_NMDS_deep_sea_thermal_vents_250625.pdf", width = 12, height = 8) # Open a new pdf file
 plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
 alpha
 beta
