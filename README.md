@@ -20,7 +20,7 @@ getwd()
 setwd("C:\\Users\\malex\\Sync\\R")
 
 
-# This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them). If you have already installed them, you can skip to the library() commands below which will open the packages you need to complete this assignment. 
+# This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager");
