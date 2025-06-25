@@ -19,8 +19,12 @@ getwd()
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager");
 
-BiocManager::install("vegan");
+# used in assignment 1
 BiocManager::install("ggplot2");
+BiocManager::install("imager");
+
+# new for this assignment 
+BiocManager::install("vegan");
 BiocManager::install("bipartite");
 BiocManager::install("ggordiplots");
 BiocManager::install("sf");
@@ -28,7 +32,7 @@ BiocManager::install("mapview");
 BiocManager::install("viridis");
 BiocManager::install("webshot");
 BiocManager::install("pagedown");
-BiocManager::install("imager");
+
 
 
 # The next block are the library() commands which will 10 the packages you need to complete this assignment. 
