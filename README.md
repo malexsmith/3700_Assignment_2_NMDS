@@ -182,6 +182,6 @@ dev.off() # Close the file
 # How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? 
 
 # good luck!
-
+#
 
 
