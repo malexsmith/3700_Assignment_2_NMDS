@@ -4,7 +4,7 @@
 
 # As in Assignment 1, to complete this assignment you will need to be running the most up to date version of R in Windows.  There are some new packages that we will be installing to complete this work. 
 
-# As before, this Assignment is designed to be followed along in steps from start to finish.  Each step creates an output that subsequent steps depend on.  Remember to follow the code blocks in order!
+# As before, in this Assignment, do not simply run the entire code at once here.  This assignment is designed to be followed along in steps (code blocks) from start to finish.  Each step will create an output that subsequent steps depend on.  So remember to follow the code blocks in order and run them one at a time!
 
 # This first block of code will clear your working environment in case you've been using R for something else in the past.
 
