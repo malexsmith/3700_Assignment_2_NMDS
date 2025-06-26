@@ -34,7 +34,6 @@ BiocManager::install("webshot");
 BiocManager::install("pagedown");
 
 
-
 # The next block are the library() commands which will 10 the packages you need to complete this assignment. 
 
 library(vegan); 
@@ -88,7 +87,8 @@ chrome_print(
   output = "nmds_map.png",
   format = "png")
 
-## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. 
+## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. (Make sure to add you name to the title! Find main and insert your name inbetween the quotes). 
+
 
 map_static<-load.image("nmds_map.png")
 plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
@@ -103,7 +103,8 @@ df = as.data.frame(richness)
 df$Region = metadata2$Region
 df$Site = metadata2$Site
 
-## Now we'll plot this as a box-plot using ggplot2
+## Now we'll plot this as a box-plot using ggplot2. (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes). 
+
 g=ggplot(df, aes(x=Region, y=richness, fill=Region)) + 
   geom_boxplot(alpha=1, show.legend = T) 
 
@@ -130,6 +131,8 @@ my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
 a.plot <- my.plot$plot
 a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS") +
   theme(plot.title = element_text(hjust = 0.5)) +scale_color_viridis(discrete = TRUE)
+
+# Now to prepare your final NMDS plot (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes).
 
 beta=a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS plot of deep-sea vent community beta-diversity (Bray-Curtis Distance)") +
   scale_color_viridis(discrete = TRUE)
