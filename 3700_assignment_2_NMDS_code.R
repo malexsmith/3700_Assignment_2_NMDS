@@ -4,7 +4,7 @@
 
 # As in Assignment 1, to complete this assignment you will need to be running the most up to date version of R in Windows.  There are some new packages that we will be installing to complete this work. 
 
-# As before, this Assignment is designed to be followed along in steps from start to finish.  Each step creates an output that subsequent steps depend on.  Remember to follow the code blocks in order!
+# As before, in this Assignment, do not simply run the entire code at once here.  This assignment is designed to be followed along in steps (code blocks) from start to finish.  Each step will create an output that subsequent steps depend on.  So remember to follow the code blocks in order and run them one at a time!
 
 # This first block of code will clear your working environment in case you've been using R for something else in the past.
 
@@ -14,7 +14,7 @@ rm(list=ls())
 
 getwd()
 
-# This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
+# This next block of code will install a package called BioManager that we will use to install 11 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager");
@@ -32,9 +32,9 @@ BiocManager::install("mapview");
 BiocManager::install("viridis");
 BiocManager::install("webshot");
 BiocManager::install("pagedown");
+BiocManager::install("betapart");
 
-
-# The next block are the library() commands which will 10 the packages you need to complete this assignment. 
+# The next block are the library() commands which will 11 the packages you need to complete this assignment. 
 
 library(vegan); 
 library(ggplot2);
@@ -46,6 +46,7 @@ library(viridis)
 library(webshot)
 library(pagedown)
 library(imager)
+library(betapart)
 
 # this next block of code will upload incidence matrices (presence, or 1's, and absence, or 0's) for the thermal vents were we have data.  In addition, the metadata files will add details about the sites (including their location, region, area, chemistry etc.)
 
@@ -87,7 +88,8 @@ chrome_print(
   output = "nmds_map.png",
   format = "png")
 
-## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. 
+## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. (Make sure to add you name to the title! Find main and insert your name inbetween the quotes). 
+
 
 map_static<-load.image("nmds_map.png")
 plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
@@ -102,7 +104,8 @@ df = as.data.frame(richness)
 df$Region = metadata2$Region
 df$Site = metadata2$Site
 
-## Now we'll plot this as a box-plot using ggplot2
+## Now we'll plot this as a box-plot using ggplot2. (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes). 
+
 g=ggplot(df, aes(x=Region, y=richness, fill=Region)) + 
   geom_boxplot(alpha=1, show.legend = T) 
 
@@ -130,6 +133,8 @@ a.plot <- my.plot$plot
 a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS") +
   theme(plot.title = element_text(hjust = 0.5)) +scale_color_viridis(discrete = TRUE)
 
+# Now to prepare your final NMDS plot (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes).
+
 beta=a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS plot of deep-sea vent community beta-diversity (Bray-Curtis Distance)") +
   scale_color_viridis(discrete = TRUE)
 beta
@@ -155,6 +160,14 @@ stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
 stats
 ## so does the region affect the community of species living at these vents? Compare the variation between groups to the variation within groups.
 
+# beta.JTU is the  value of the turnover component, measured as Simpson dissimilarity.  
+# beta.JNE is the value of the nestedness component, measured as nestedness-resultant fraction of Sorensen dissimilarity
+# beta.JAC is the value of the overall beta diversity, measured as Sorensen dissimilarity
+
+turnover_or_nestedness = beta.multi(data2, index.family="jaccard")
+turnover_or_nestedness=as.data.frame(turnover_or_nestedness)
+turnover_or_nestedness
+
 
 ## Finally - the next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them 
 
@@ -178,6 +191,6 @@ dev.off() # Close the file
 # How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? 
 
 # good luck!
-
+#
 
 
