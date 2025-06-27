@@ -14,7 +14,7 @@ rm(list=ls())
 
 getwd()
 
-# This next block of code will install a package called BioManager that we will use to install 11 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
+# This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager");
@@ -25,7 +25,6 @@ BiocManager::install("imager");
 
 # new for this assignment 
 BiocManager::install("vegan");
-BiocManager::install("bipartite");
 BiocManager::install("ggordiplots");
 BiocManager::install("sf");
 BiocManager::install("mapview");
@@ -34,11 +33,11 @@ BiocManager::install("webshot");
 BiocManager::install("pagedown");
 BiocManager::install("betapart");
 
-# The next block are the library() commands which will 11 the packages you need to complete this assignment. 
+# The next block are the library() commands which will 10 the packages you need to complete this assignment. 
 
 library(vegan); 
 library(ggplot2);
-library(bipartite);
+
 library(ggordiplots)
 library(sf)
 library(mapview)
