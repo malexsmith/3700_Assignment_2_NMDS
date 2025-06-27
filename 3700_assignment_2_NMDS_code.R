@@ -160,9 +160,11 @@ stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
 stats
 ## so does the region affect the community of species living at these vents? Compare the variation between groups to the variation within groups.
 
+# What component of this betadiversity turns over across space, and what component is nested, one within another? The next code block uses the package betapart to differentiate the importance of these components.
 # beta.JTU is the  value of the turnover component, measured as Simpson dissimilarity.  
 # beta.JNE is the value of the nestedness component, measured as nestedness-resultant fraction of Sorensen dissimilarity
 # beta.JAC is the value of the overall beta diversity, measured as Sorensen dissimilarity
+
 
 turnover_or_nestedness = beta.multi(data2, index.family="jaccard")
 turnover_or_nestedness=as.data.frame(turnover_or_nestedness)
