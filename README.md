@@ -188,7 +188,7 @@ dev.off() # Close the file
 
 # Are the vent Regions distinct? How does variation between regions compare to the variation within regions?
 
-# Is that diversity nested within the diversity of another?  
+# Is the diversity of one Region nested within the diversity of another?  
 
 # How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? 
 
