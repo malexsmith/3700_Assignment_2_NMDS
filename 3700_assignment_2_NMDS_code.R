@@ -116,6 +116,11 @@ alpha
 alpha.anova <- aov(richness ~ Region, data=df)
 summary(alpha.anova)
 
+## Was there any significant difference?  Between which sites?  The post-hoc Tukey test below will tell you which comparisons were significantly different. 
+
+tukey.test <- TukeyHSD(alpha.anova)
+tukey.test
+
 ## Next, we're going to use the vegan package to estimate similar or different the community of species living at vents in each region are. 
 ## We're going to be doing this using the analysis called Non-Metric multiDimentional Scaling (or NMDS), in the vegan and ggordiplot packages. 
 
