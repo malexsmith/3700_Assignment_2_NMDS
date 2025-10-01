@@ -65,6 +65,7 @@ mapview(ThermalVents2, zcol = "Region")
 
 m=mapview(ThermalVents2, zcol = "Region", burst = TRUE, map.types = "CartoDB.Positron", col.regions = colors)
 
+
 ## Your second map will be against a ESRI World Imagery background - which shows elevations and depths. 
 ## You should be able to zoom in and see your sites siting on large geological ridges. 
 
@@ -126,9 +127,24 @@ tukey.test
 set.seed(123)
 ord2 <- metaMDS(data2)
 
+## Next we're going to ask what the 'stress' of this NMDS using a stress plot and the stress value.  
+# The command stressplot creates a Shepard diagram that shows you a goodness of fit measure for points in nonmetric multidimensional scaling
+# The stress component of the NMDS provides the actual value calculated for each distance measure. Remember, the utility of the approach tends to be when stress is low (<0.2 or 0.3). Is your stress vaue useful? 
+
+stressplot(ord2)
+ord2$stress
+
+
 ## The next block creates this NMDS map and then we'll use the ouput to make a good plot in ggplot. 
 
 my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
+
+## Now let's add in some of the environmental metadata (abiotic variables we know about from your sites)
+## first  - we'll make a new dataframe of the continuous variables
+
+metadata = metadata2[,2:3]
+
+my.plot2 = gg_envfit(ord=ord2, env=metadata, groups=metadata2$Region)
 
 #  The above code for 'my.plot' is your NMDS map, but the colours don't align with your earlier plots - so let's extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
 
@@ -143,7 +159,7 @@ beta=a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS plo
 beta
 
 ## Are the regions characterised by the same thermal-vent species? 
- 
+
 ## One way to determine how different they are is to use ANOSIM (Clarke 1993) or the PERMANOVA 
 
 # The ANalysis Of SIMilarity (ANOSIM) test has some similarity to an ANOVA-like hypothesis test, however, it is used to evaluate a dissimilarity matrix rather than raw data (Clarke, 1993). The PERmutational Multivariate ANalysis of VAriance (PERMANOVA) compares the variation between groups to the variation within groups
@@ -164,10 +180,12 @@ stats
 ## so does the region affect the community of species living at these vents? Compare the variation between groups to the variation within groups.
 
 # What component of this betadiversity turns over across space, and what component is nested, one within another? The next code block uses the package betapart to differentiate the importance of these components.
-# beta.JTU is the  value of the turnover component, measured as Simpson dissimilarity.  
-# beta.JNE is the value of the nestedness component, measured as nestedness-resultant fraction of Sorensen dissimilarity
-# beta.JAC is the value of the overall beta diversity, measured as Sorensen dissimilarity
 
+#  beta.JTU	is the value of the turnover component, measured as turnover fraction of Jaccard dissimilarity
+
+# beta.JNE is the value of the nestedness component, measured as nestedness-resultant fraction of Jaccard dissimilarity
+
+# beta.JAC is the value of the overall beta diversity, measured as Jaccard dissimilarity
 
 turnover_or_nestedness = beta.multi(data2, index.family="jaccard")
 turnover_or_nestedness=as.data.frame(turnover_or_nestedness)
@@ -186,10 +204,10 @@ dev.off() # Close the file
 
 # You made it - Amazing!! You've mapped the locations of many of the thermal-vents around the world and then used species incidence data from these sites to compare patterns of alpha- and beta-diversity. Now, print your pdf, examine the map, box-plot and NMDS, and prepare to speak for three minutes (!!without notes!!) about the conclusions you might make regarding the diversity, ecological similarity and vulnerability of these thermal-vents. 
 
-  
-# How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions?
 
-# Are the vent Regions distinct? How does variation between regions compare to the variation within regions?
+# How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions? 
+
+# Are the vent Regions distinct? How does variation between regions compare to the variation within regions? 
 
 # Is the diversity of one Region nested within the diversity of another?  
 
