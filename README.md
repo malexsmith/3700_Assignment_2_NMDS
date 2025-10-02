@@ -174,6 +174,7 @@ attach(metadata2)
 # This next block will run the ANOSIM to compare the variation between groups to the variation within groups
 deep.sea.anosim <- anosim(comm.bc.dist , Region)
 summary(deep.sea.anosim)
+plot(deep.sea.anosim)
 
 ## This next block will run the PERMANOVA to compare the variation between groups to the variation within groups
 stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
