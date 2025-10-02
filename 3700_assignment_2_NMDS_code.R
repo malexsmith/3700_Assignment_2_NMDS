@@ -211,8 +211,7 @@ dev.off() # Close the file
 
 # Are the vent Regions distinct? How does variation between regions compare to the variation within regions? Does this matter? Why or why not? 
 
-# Is the diversity of one vent Region nested within the diversity of another? What does this tell you about isolation?
+# Is the diversity of one vent Region nested within the diversity of another? What does this tell you about isolation? What other metadata would you like to include in future analyses?
 
 # How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? Are there regions that might be more resilient than others? 
-
-# good luck, and remember these species and communities the next time you hear about deep-sea mining!
+# Good luck, and remember these species and communities the next time you hear about deep-sea mining!
