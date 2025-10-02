@@ -33,11 +33,10 @@ BiocManager::install("webshot");
 BiocManager::install("pagedown");
 BiocManager::install("betapart");
 
-# The next block are the library() commands which will 10 the packages you need to complete this assignment. 
+# The next block are the library() commands which will initiate 10 the packages you need to complete this assignment. 
 
 library(vegan); 
 library(ggplot2);
-
 library(ggordiplots)
 library(sf)
 library(mapview)
@@ -54,7 +53,7 @@ data2 <- read.csv(file = "3700 bigger test nmds community.csv",head=TRUE,row.nam
 metadata2 <- read.csv(file = "3700 bigger test nmds metadata.csv",head=TRUE,row.names = 1, sep=",")
 
 ## First, lets make a map of the locations using the package mapview. 
-## this map is dynamic and you can move around and plot against several background layers
+## this map is dynamic and you can move around and plot against several background layers. This colors command below will ensure that your sites have the same colors in all subsequent plots.
 
 colors = viridis(7)
 
@@ -67,6 +66,7 @@ m=mapview(ThermalVents2, zcol = "Region", burst = TRUE, map.types = "CartoDB.Pos
 
 
 ## Your second map will be against a ESRI World Imagery background - which shows elevations and depths. 
+
 ## You should be able to zoom in and see your sites siting on large geological ridges. 
 
 mapview(ThermalVents2, zcol = "Region", map.types = "Esri.WorldImagery")
@@ -87,7 +87,7 @@ chrome_print(
   output = "nmds_map.png",
   format = "png")
 
-## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. (Make sure to add you name to the title! Find main and insert your name inbetween the quotes). 
+## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. (Make sure to add you name to the title! Find main and insert your name in between the quotes). 
 
 
 map_static<-load.image("nmds_map.png")
@@ -103,7 +103,7 @@ df = as.data.frame(richness)
 df$Region = metadata2$Region
 df$Site = metadata2$Site
 
-## Now we'll plot this as a box-plot using ggplot2. (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes). 
+## Now we'll plot this as a box-plot using ggplot2. (Make sure to add you name to the title! Find title below and insert your name in between the quotes). 
 
 g=ggplot(df, aes(x=Region, y=richness, fill=Region)) + 
   geom_boxplot(alpha=1, show.legend = T) 
@@ -121,26 +121,28 @@ summary(alpha.anova)
 tukey.test <- TukeyHSD(alpha.anova)
 tukey.test
 
-## Next, we're going to use the vegan package to estimate similar or different the community of species living at vents in each region are. 
+## Next, we're going to use the vegan package to estimate how similar or different the community of species living at vents in each region are. 
 ## We're going to be doing this using the analysis called Non-Metric multiDimentional Scaling (or NMDS), in the vegan and ggordiplot packages. 
 
 set.seed(123)
 ord2 <- metaMDS(data2)
 
 ## Next we're going to ask what the 'stress' of this NMDS using a stress plot and the stress value.  
-# The command stressplot creates a Shepard diagram that shows you a goodness of fit measure for points in nonmetric multidimensional scaling
+
+# The command stressplot creates a Shepard diagram that shows you a goodness of fit measure for points in nonmetric multidimensional scaling.
+
 # The stress component of the NMDS provides the actual value calculated for each distance measure. Remember, the utility of the approach tends to be when stress is low (<0.2 or 0.3). Is your stress vaue useful? 
 
 stressplot(ord2)
 ord2$stress
 
 
-## The next block creates this NMDS map and then we'll use the ouput to make a good plot in ggplot. 
+## The next block creates this NMDS map with confidence ellipsoids, and then we'll use the ouput to make a more visually appealing plot in ggplot. 
 
 my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
 
 ## Now let's add in some of the environmental metadata (abiotic variables we know about from your sites)
-## first  - we'll make a new dataframe of the continuous variables
+## first  - we'll make a new dataframe of the continuous variables (here, lat and long)
 
 metadata = metadata2[,2:3]
 
@@ -152,7 +154,7 @@ a.plot <- my.plot$plot
 a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS") +
   theme(plot.title = element_text(hjust = 0.5)) +scale_color_viridis(discrete = TRUE)
 
-# Now to prepare your final NMDS plot (Make sure to add you name to the title! Find title below and insert your name inbetween the quotes).
+# Now to prepare your final NMDS plot (Make sure to add you name to the title! Find title below and insert your name in between the quotes).
 
 beta=a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS plot of deep-sea vent community beta-diversity (Bray-Curtis Distance)") +
   scale_color_viridis(discrete = TRUE)
@@ -160,7 +162,7 @@ beta
 
 ## Are the regions characterised by the same thermal-vent species? 
 
-## One way to determine how different they are is to use ANOSIM (Clarke 1993) or the PERMANOVA 
+## One way to determine how different they are is to use an analysis called ANOSIM (Clarke 1993) or the PERMANOVA.  
 
 # The ANalysis Of SIMilarity (ANOSIM) test has some similarity to an ANOVA-like hypothesis test, however, it is used to evaluate a dissimilarity matrix rather than raw data (Clarke, 1993). The PERmutational Multivariate ANalysis of VAriance (PERMANOVA) compares the variation between groups to the variation within groups
 
@@ -192,28 +194,25 @@ turnover_or_nestedness=as.data.frame(turnover_or_nestedness)
 turnover_or_nestedness
 
 
-## Finally - the next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them 
+## Finally - the next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them in your video
 
 
-pdf("3700_Assignment_2_NMDS_deep_sea_thermal_vents_250625.pdf", width = 12, height = 8) # Open a new pdf file
+pdf("3700_Assignment_2_NMDS_deep_sea_thermal_vents.pdf", width = 12, height = 8) # Open a new pdf file
 plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
 alpha
 beta
 dev.off() # Close the file
 
 
-# You made it - Amazing!! You've mapped the locations of many of the thermal-vents around the world and then used species incidence data from these sites to compare patterns of alpha- and beta-diversity. Now, print your pdf, examine the map, box-plot and NMDS, and prepare to speak for three minutes (!!without notes!!) about the conclusions you might make regarding the diversity, ecological similarity and vulnerability of these thermal-vents. 
+# You made it - Amazing!! You've mapped the locations of many of the thermal-vents around the world and then used species incidence data from these sites to compare patterns of alpha- and beta-diversity. Now, print your pdf, examine the map, box-plot and NMDS (and your statistics), and prepare to speak for three minutes (!!without reading notes!!) about the conclusions you have made regarding the diversity, ecological similarity and vulnerability of these thermal-vents. 
 
 
-# How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions? 
+# How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions? Does this matter? Why? Why not?
 
-# Are the vent Regions distinct? How does variation between regions compare to the variation within regions? 
+# Are the vent Regions distinct? How does variation between regions compare to the variation within regions? Does this matter? Why or why not? 
 
-# Is the diversity of one Region nested within the diversity of another?  
+# Is the diversity of one vent Region nested within the diversity of another? What does this tell you about isolation?
 
-# How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? 
+# How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? Are there regions that might be more resilient than others? 
 
-# good luck!
-#
-
-
+# good luck, and remember these species and communities the next time you hear about deep-sea mining!
