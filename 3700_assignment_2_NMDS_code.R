@@ -147,6 +147,7 @@ my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
 metadata = metadata2[,2:3]
 
 my.plot2 = gg_envfit(ord=ord2, env=metadata, groups=metadata2$Region)
+my.plot2
 
 #  The above code for 'my.plot' is your NMDS map, but the colours don't align with your earlier plots - so let's extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
 
