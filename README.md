@@ -1,6 +1,6 @@
-# ZOO*3700 Assignment 2 : Community richness and similarity between deep-sea vents around the world. 
+# ZOO*3700 InvertR - Assignment 2 : Community richness and similarity between deep-sea vents around the world. 
 
-# Welcome to your second invertebrateR assignments where we continue our exploration of the deep-sea thermal vent communities.  This time, you will map locations, estimate alpha and beta-diversity and ask whether these communities are different and isolated and what effect mining in international waters will have on this biodiversity. 
+# Welcome to your second InvertR assignments where we continue our exploration of the deep-sea thermal vent communities. Building on what you discovered in InvertR I (namely how important understanding dispersal is to understanding how fragemented populations actually are); this time, you will map locations, estimate alpha and beta-diversity and ask whether these communities are different and isolated and what effect mining in international waters will have on this biodiversity. 
 
 # As in Assignment 1, to complete this assignment you will need to be running the most up to date version of R in Windows.  There are some new packages that we will be installing to complete this work. 
 
@@ -10,41 +10,38 @@
 
 rm(list=ls())
 
-# The next block of code will tell you where your working directory is (i.e. any figures you generate you can find in that folder).  The 'wd' is also where to put your input files.
+# The next block of code will tell you where your working directory is (i.e. any figures you generate you can find in that folder).  The 'wd' is also where to put your input files (after downloading and unzipping the folder from github).
 
 getwd()
 
-# This next block of code will install a package called BioManager that we will use to install 10 further packages (if you have not already installed them - at least two of them (ggplot2 and imager) you would have installed for the first assignment). For any of the packages that you might have already installed, you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
+# This next block of code will install a package called BioManager used to install needed analysis packages.  Note that for any of the packages that you  have already installed (see InvertR I assignment), you can skip down to the library() commands below which will open the packages needed to complete this assignment. 
 
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager");
 
-# used in assignment 1
-BiocManager::install("ggplot2");
-BiocManager::install("imager");
+# used in InvertR I and also here (so if you've already installed them you can skip to the "library()" stages below)
 
-# new for this assignment 
+BiocManager::install("ggplot2");
 BiocManager::install("vegan");
 BiocManager::install("ggordiplots");
 BiocManager::install("sf");
-BiocManager::install("mapview");
+BiocManager::install("rnaturalearth");
+BiocManager::install("rnaturalearthdata");
+BiocManager::install("ggspatial");
 BiocManager::install("viridis");
-BiocManager::install("webshot");
-BiocManager::install("pagedown");
 BiocManager::install("betapart");
 
 # The next block are the library() commands which will initiate 10 the packages you need to complete this assignment. 
 
 library(vegan); 
 library(ggplot2);
-library(ggordiplots)
-library(sf)
-library(mapview)
-library(viridis)
-library(webshot)
-library(pagedown)
-library(imager)
-library(betapart)
+library(ggordiplots);
+library(sf);
+library(rnaturalearth);
+library(rnaturalearthdata);
+library(ggspatial);
+library(viridis);
+library(betapart);
 
 # this next block of code will upload incidence matrices (presence, or 1's, and absence, or 0's) for the thermal vents were we have data.  In addition, the metadata files will add details about the sites (including their location, region, area, chemistry etc.)
 
@@ -52,46 +49,34 @@ data2 <- read.csv(file = "3700 bigger test nmds community.csv",head=TRUE,row.nam
 
 metadata2 <- read.csv(file = "3700 bigger test nmds metadata.csv",head=TRUE,row.names = 1, sep=",")
 
-## First, lets make a map of the locations using the package mapview. 
-## this map is dynamic and you can move around and plot against several background layers. This colors command below will ensure that your sites have the same colors in all subsequent plots.
+# This next block of code is going to plot a map of the deep-sea vent sampling sites and regions where your deep-sea vent taxa were collected. In this case, multiple vents from five regions around the world.  
 
-colors = viridis(7)
+# Convert lat/long to sf format
+sites_sf <- st_as_sf(metadata2, coords = c("Long", "Lat"), crs = 4326)
 
-## Your first map will be against a standard cartographic background of shorelines
-ThermalVents2 <- st_as_sf(metadata2, coords = c("Long", "Lat"),  crs = 4326)
+# Load Map Data
+world <- ne_countries(scale = "medium", returnclass = "sf")
 
-mapview(ThermalVents2, zcol = "Region")
+# Now transform to the Equal Earth Projection
+# What is this?  Read more here: 
+## https://www.theguardian.com/world/2026/sep/04/un-vote-world-map-mercator-equal-earth-africa
+## https://www.theguardian.com/science/ng-interactive/2026/sep/18/map-cartographers-western-bias-mercator-equal-earth
 
-m=mapview(ThermalVents2, zcol = "Region", burst = TRUE, map.types = "CartoDB.Positron", col.regions = colors)
+world_equal_earth <- st_transform(world, crs = 8857)
 
+# Now, create your map that is focussed on the basins in basins and regions. Please add your own name into the title.  
 
-## Your second map will be against a ESRI World Imagery background - which shows elevations and depths. 
-
-## You should be able to zoom in and see your sites siting on large geological ridges. 
-
-mapview(ThermalVents2, zcol = "Region", map.types = "Esri.WorldImagery")
-
-
-## Now, we're going to follow several steps to export this map to an image so that you can include it in your final pdf working document. 
-
-# First, export your map to html in your working directory using the package webshot which needs to install phantomjs.
-
-webshot::install_phantomjs()
-
-mapshot(m, url = paste0(getwd(), "/map.html"))
-
-## Next we'll use the package pagedown to export this html map to a png file in your working directory
-
-chrome_print(
-  "map.html",
-  output = "nmds_map.png",
-  format = "png")
-
-## Last maping step is to add this file to your R environment so that it can be included in your final print to pdf. (Make sure to add you name to the title! Find main and insert your name in between the quotes). 
-
-
-map_static<-load.image("nmds_map.png")
-plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
+global_vent_map = ggplot(data = world_equal_earth) +
+  geom_sf(fill = "antiquewhite", color = "gray50") +
+  # Plot points
+  geom_sf(data = sites_sf, aes(color = Region), size = 3) +
+  scale_color_viridis_d(option = "viridis")+
+  annotation_scale(location = "bl", width_hint = 0.25) +
+  theme_minimal() +
+  labs(title = "Deep-sea vents where spp. were sampled",
+       x = "Longitude", y = "Latitude") +
+  theme(panel.background = element_rect(fill = "aliceblue"))
+global_vent_map
 
 ## Now, lets explore the alpha and beta-diversity within and between these deep-sea communities.  
 ## First off, we're going to use the vegan package to estimate the species richness of the vents in each region. 
@@ -117,7 +102,6 @@ alpha.anova <- aov(richness ~ Region, data=df)
 summary(alpha.anova)
 
 ## Was there any significant difference?  Between which sites?  The post-hoc Tukey test below will tell you which comparisons were significantly different. 
-
 tukey.test <- TukeyHSD(alpha.anova)
 tukey.test
 
@@ -129,13 +113,12 @@ ord2 <- metaMDS(data2)
 
 ## Next we're going to ask what the 'stress' of this NMDS using a stress plot and the stress value.  
 
-# The command stressplot creates a Shepard diagram that shows you a goodness of fit measure for points in nonmetric multidimensional scaling
+# The command stressplot creates a Shepard diagram that shows you a goodness of fit measure for points in nonmetric multidimensional scaling.
 
-# The stress component of the NMDS provides the actual value calculated for each distance measure. Remember, the utility of the approach tends to be when stress is low (<0.2 or 0.3). Is your stress vaue useful? 
+# The stress component of the NMDS provides the actual value calculated for each distance measure. Remember, the utility of the approach tends to be when stress is low (<0.2 or 0.3). Is your stress value useful? 
 
 stressplot(ord2)
 ord2$stress
-
 
 ## The next block creates this NMDS map with confidence ellipsoids, and then we'll use the ouput to make a more visually appealing plot in ggplot. 
 
@@ -149,7 +132,7 @@ metadata = metadata2[,2:3]
 my.plot2 = gg_envfit(ord=ord2, env=metadata, groups=metadata2$Region)
 my.plot2
 
-#  The above code for 'my.plot' is your NMDS map, but the colours don't align with your earlier plots - so let's extract the data from the nmds and then plots the species as points that I've coloured by taxon (class).
+#  The above code for 'my.plot' is your NMDS map, but the colours don't align with your earlier plots - so let's extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
 
 a.plot <- my.plot$plot
 a.plot + labs(color = "Region", x = "NMDS1", y = "NMDS2", title = "NMDS") +
@@ -163,7 +146,7 @@ beta
 
 ## Are the regions characterised by the same thermal-vent species? 
 
-## One way to determine how different they are is to use an analysis called ANOSIM (Clarke 1993) or the PERMANOVA. 
+## One way to determine how different they are is to use an analysis called ANOSIM (Clarke 1993) or the PERMANOVA.  
 
 # The ANalysis Of SIMilarity (ANOSIM) test has some similarity to an ANOVA-like hypothesis test, however, it is used to evaluate a dissimilarity matrix rather than raw data (Clarke, 1993). The PERmutational Multivariate ANalysis of VAriance (PERMANOVA) compares the variation between groups to the variation within groups
 
@@ -173,17 +156,20 @@ comm.bc.dist <- vegdist(data2, method = "bray")
 attach(metadata2)
 
 # This next block will run the ANOSIM to compare the variation between groups to the variation within groups
+
 deep.sea.anosim <- anosim(comm.bc.dist , Region)
 summary(deep.sea.anosim)
 plot(deep.sea.anosim)
 
 ## This next block will run the PERMANOVA to compare the variation between groups to the variation within groups
+
 stats = adonis2(data2 ~ Region, data = metadata2,permutations = 999,
                 method = "bray")
 stats
+
 ## so does the region affect the community of species living at these vents? Compare the variation between groups to the variation within groups.
 
-# What component of this betadiversity turnsover across space, and what component is nested, one within another? The next code block uses the package betapart to differentiate the importance of these components.
+# What component of this betadiversity turns over across space, and what component is nested, one within another? The next code block uses the package betapart to differentiate the importance of these components.
 
 #  beta.JTU	is the value of the turnover component, measured as turnover fraction of Jaccard dissimilarity
 
@@ -195,25 +181,25 @@ turnover_or_nestedness = beta.multi(data2, index.family="jaccard")
 turnover_or_nestedness=as.data.frame(turnover_or_nestedness)
 turnover_or_nestedness
 
-
 ## Finally - the next block will create a three page pdf of your map, alpha- and beta-diversity analyses.  Print these off and use them in your video
 
-
 pdf("3700_Assignment_2_NMDS_deep_sea_thermal_vents.pdf", width = 12, height = 8) # Open a new pdf file
-plot(map_static,axes=FALSE, main = "Deep-sea vents where spp. were sampled")
+global_vent_map
 alpha
 beta
 dev.off() # Close the file
 
-
 # You made it - Amazing!! You've mapped the locations of many of the thermal-vents around the world and then used species incidence data from these sites to compare patterns of alpha- and beta-diversity. Now, print your pdf, examine the map, box-plot and NMDS (and your statistics), and prepare to speak for three minutes (!!without reading notes!!) about the conclusions you have made regarding the diversity, ecological similarity and vulnerability of these thermal-vents. 
 
+# Remember to upload your video to YouTube (and then paste this link into Dropbox) and that there is no video editing permitted.  
 
-# How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions? Does this matter? Why? Why not?
 
-# Are the vent Regions distinct? How does variation between regions compare to the variation within regions? Does this matter? Why or why not? 
+# Q1: How species rich are these vents? Which is the most diverse? Is alpha diversity different between regions? Does this matter? Why? Why not?
 
-# Is the diversity of one vent Region nested within the diversity of another? What does this tell you about isolation? What other metadata would you like to include in future analyses? 
+# Q2: Are the vent Regions distinct? How does variation between regions compare to the variation within regions? Does this matter? Why or why not? 
 
-# How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? Are there regions that might be more resilient than others? 
-# Good luck, and remember these species and communities the next time you hear about deep-sea mining!
+# Q3: Is the diversity of one vent Region nested within the diversity of another? What does this tell you about isolation? What other metadata would you like to include in future analyses?
+
+# Q4: How vulnerable are these sites and regions? What consequences would mining have on the species living at and around deep-sea vents? Are there regions that might be more resilient than others? 
+
+# Good luck, and please remember these species and communities the next time you hear about mining in the deep sea!
