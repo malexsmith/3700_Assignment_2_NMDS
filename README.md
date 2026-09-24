@@ -125,12 +125,20 @@ ord2$stress
 my.plot = gg_ordiplot(ord2, groups=metadata2$Region, kind="se", conf = 0.99)
 
 ## Now let's add in some of the environmental metadata (abiotic variables we know about from your sites)
-## first  - we'll make a new dataframe of the continuous variables (here, lat and long)
+## first  - we'll make a new dataframe of the continuous variables 
 
-metadata = metadata2[,2:3]
+metadata = metadata2[,7:17]
+
+## next we'll test the significance of these variables as predictors of the community betadiversity. Are there any significant variables?  Which? 
+
+envfit(ord=ord2, env=environ, groups=metadata2$Region)
+
+## finally - we'll plot any significant variables here. 
 
 my.plot2 = gg_envfit(ord=ord2, env=metadata, groups=metadata2$Region)
 my.plot2
+
+## What does this tell you about the relative importance of the chemical composition of vents and their spatial composition? 
 
 #  The above code for 'my.plot' is your NMDS map, but the colours don't align with your earlier plots - so let's extracts the data from the nmds and then plots the species as points that I've coloured by taxon (class).
 
