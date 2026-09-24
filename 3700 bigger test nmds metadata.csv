@@ -1,18 +1,18 @@
-,Region,Lat,Long,Site
-Longqi ,Southwest Indian Ridge,-37.783333,49.65,Longqi 
-Duanqiao,Southwest Indian Ridge,-37.65,50.4,Duanqiao
-Tiancheng,Southwest Indian Ridge,-27.95,63.533333,Tiancheng
-Kairei,Central Indian Ridge,-25.3205,70.040333,Kairei
-Edmond,Central Indian Ridge,-23.878,69.596667,Edmond
-Solitaire,Central Indian Ridge,-19.556833,65.848,Solitaire
-Dodo,Central Indian Ridge,-18.335,65.298333,Dodo
-Lucky Strike,mid-Atlantic Ridge,37.25,-32.3,Lucky Strike
-Rainbow,mid-Atlantic Ridge,36.23,-33.902,Rainbow
-Broken Spur ,mid-Atlantic Ridge,29.1667,-43.1667,Broken Spur 
-TAG ,mid-Atlantic Ridge,26.1397,-44.8319,TAG 
-Snake Pit ,mid-Atlantic Ridge,23.368,-44.95,Snake Pit 
-Logatchev,mid-Atlantic Ridge,14.7,-44.8,Logatchev
-Ashadze-1 ,mid-Atlantic Ridge,12.7,-49.7,Ashadze-1 
-E2 ,East Scotia Ridge,-56.08918,-30.31885,E2 
-E9 ,East Scotia Ridge,-60.04163,-29.99987,E9 
-Kemp Caldera,South Sandwich Islands,-59.69475,-28.35025,Kemp Caldera
+,Region,Lat,Long,Site,spread,Max.Temp,Lat,Long,Max.Depth,FullSpreadingRate,H2,CH4,SIO2,pH,Cl,Fe,Cu
+Longqi ,Southwest Indian Ridge,-37.783333,49.65,Longqi ,Ultraslow,379,-37.7838,49.6494,2785,12.1,15,2,4,8.5,500,0.05,0.1
+Duanqiao,Southwest Indian Ridge,-37.65,50.4,Duanqiao,Ultraslow,13,-37.6579,50.4671,1780,11.9,15,2,4,8.5,500,0.05,0.1
+Tiancheng,Southwest Indian Ridge,-27.95,63.533333,Tiancheng,Ultraslow,13,-27.967,63.55,3600,9.7,15,2,4,8.5,500,0.05,0.1
+Kairei,Central Indian Ridge,-25.3205,70.040333,Kairei,Slow,360,-25.3195,70.04,2460,49.1,15,2,4,8.5,500,0.05,0.1
+Edmond,Central Indian Ridge,-23.878,69.596667,Edmond,Fast,380,-29.93,60.05,2402,79.1,1,0.1,20,2.5,200,15,50
+Solitaire,Central Indian Ridge,-19.556833,65.848,Solitaire,Slow,296,-19.545,65.85,2630,41.3,15,2,4,8.5,500,0.05,0.1
+Dodo,Central Indian Ridge,-18.335,65.298333,Dodo,Slow,356,-18.347,65.305,2730,40,15,2,4,8.5,500,0.05,0.1
+Lucky Strike,mid-Atlantic Ridge,37.25,-32.3,Lucky Strike,Slow,333,37.2933,-32.2733,1740,20.2,15,2,4,8.5,500,0.05,0.1
+Rainbow,mid-Atlantic Ridge,36.23,-33.902,Rainbow,Slow,362,36.23,-33.902,2320,20.6,15,2,4,8.5,500,0.05,0.1
+Broken Spur ,mid-Atlantic Ridge,29.1667,-43.1667,Broken Spur ,Slow,365,29.17,-43.1717,3100,22.9,15,2,4,8.5,500,0.05,0.1
+TAG ,mid-Atlantic Ridge,26.1397,-44.8319,TAG ,Slow,369,26.1367,-44.8267,3670,23.6,15,2,4,8.5,500,0.05,0.1
+Snake Pit ,mid-Atlantic Ridge,23.368,-44.95,Snake Pit ,Slow,366,23.3683,-44.95,3500,24.1,15,2,4,8.5,500,0.05,0.1
+Logatchev,mid-Atlantic Ridge,14.7,-44.8,Logatchev,Slow,370,14.752,-44.9785,3050,25.5,15,2,4,8.5,500,0.05,0.1
+Ashadze-1 ,mid-Atlantic Ridge,12.7,-49.7,Ashadze-1 ,Slow,355,12.9733,-44.8633,4200,26.2,15,2,4,8.5,500,0.05,0.1
+E2 ,East Scotia Ridge,-56.08918,-30.31885,E2 ,Slow,382,-69.596,-23.878,3320,47.8,15,2,4,8.5,500,0.05,0.1
+E9 ,East Scotia Ridge,-60.04163,-29.99987,E9 ,Fast,352,-56.0917,-30.325,2641,66.2,1,0.1,20,2.5,200,15,50
+Kemp Caldera,South Sandwich Islands,-59.69475,-28.35025,Kemp Caldera,Fast,40,-59.7,-28.3166,1420,65,1,0.1,20,2.5,200,15,50
