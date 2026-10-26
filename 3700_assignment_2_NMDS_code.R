@@ -131,7 +131,7 @@ metadata = metadata2[,7:17]
 
 ## next we'll test the significance of these variables as predictors of the community betadiversity. Are there any significant variables?  Which? 
 
-envfit(ord=ord2, env=environ, groups=metadata2$Region)
+envfit(ord=ord2, env=metadata, groups=metadata2$Region)
 
 ## finally - we'll plot any significant variables here. 
 
