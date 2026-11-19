@@ -68,7 +68,6 @@ world_equal_earth <- st_transform(world, crs = 8857)
 
 global_vent_map = ggplot(data = world_equal_earth) +
   geom_sf(fill = "antiquewhite", color = "gray50") +
-  # Plot points
   geom_sf(data = sites_sf, aes(color = Region), size = 3) +
   scale_color_viridis_d(option = "viridis")+
   annotation_scale(location = "bl", width_hint = 0.25) +
